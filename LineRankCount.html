@@ -116,6 +116,8 @@
           // $("#fileContent").html($("#fileContent").html() + "\r\n" + (i+1) + ":" + time + "," + sender + "," + message);
           if (message == "[Sticker]" || message == "[貼圖]"){
             setData(person_map,sender,"sticker");
+          }else if (message == "[Photo]" || message == "[照片]"){
+            setData(person_map,sender,"photo");
           }else{
             if (message.length <= 2){
               setData(person_map,sender,"shortmessage");
@@ -140,6 +142,7 @@
         var mess_rank = new Map();
         var shortmess_rank = new Map();
         var sticker_rank = new Map();
+        var photo_rank = new Map();
         var remark = new Map();
         dateS = new Date(dateS);
         dateE = new Date(dateE);
@@ -185,6 +188,13 @@
                 }else{
                   sticker_rank.set(person,value);
                 }
+              }else if (index.indexOf("_photo") != -1){
+                var person = index.replace("_photo","");
+                if (photo_rank.has(person)){
+                  photo_rank.set(person,photo_rank.get(person) + value);
+                }else{
+                  photo_rank.set(person,value);
+                }
               }else if (index.indexOf("_kick_") != -1){
                 remark.set(index.replace("_kick_","踢了"),this_dateStr + " "  + value);
               }else if (index.indexOf("_quit") != -1){
@@ -206,7 +216,8 @@
         showResult(mess_rank,1);
         showResult(shortmess_rank,2);
         showResult(sticker_rank,3);
-        showResult(remark,4);
+        showResult(sticker_rank,4);
+        showResult(remark,5);
         // console.log(mess_rank,shortmess_rank,sticker_rank);
       } catch(err) {
         showError(err.message);
@@ -258,9 +269,11 @@
         }else if (type == 3){
           title = "貼圖";
         }else if (type == 4){
+          title = "照片";
+        }else if (type == 5){
           title = "其餘事項";
         }
-        if (type < 4){
+        if (type < 5){
           th.appendChild(document.createTextNode(title + "排行榜"));
           headRow.appendChild(th);
           thead.appendChild(headRow);
