@@ -184,7 +184,7 @@
                   sticker_rank.set(person,value);
                 }
               }else if (index.indexOf("_kick") != -1){
-                remark.set(index.replace("_kick","踢了").split("_")[0],value);
+                remark.set(index.replace("_kick","踢了"),value);
               }else if (index.indexOf("_quit") != -1){
                 remark.set(index.replace("_quit","退出"),this_dateStr + " "  + value);
               }else if (index.indexOf("_rename") != -1){
@@ -321,13 +321,17 @@
               tr.className="other more";
             }
             var td = document.createElement("td");
-            td.appendChild(document.createTextNode(el2));
-            tr.appendChild(td);
-            var td = document.createElement("td");
             var span = document.createElement("span");
             if (el2.indexOf("踢了") != -1){
               span.className = "mark";
+              el2 = el2.split("_")[0];
+              console.log(el2);
             }
+            td.appendChild(document.createTextNode(el2));
+            tr.appendChild(td);
+            var td = document.createElement("td");
+            
+
             span.appendChild(document.createTextNode(el1));
             td.appendChild(span);
             tr.appendChild(td);
