@@ -10,6 +10,7 @@
     var content = null;
     var fReader = new FileReader();
     var d = null;
+    var errorline = "";
     var language = "";
     fReader.onload = function (event) {
       content = event.target.result;
@@ -65,6 +66,7 @@
           var message = lines[i].split("\t")[2];
           if (time == undefined || sender == undefined || message == undefined){
             $("#fileContent").html($("#fileContent").html() + "\r\n" + (i+1) + ":" + time + "," + sender + "," + message);
+            errorline = lines[i];
           }
           if (time.indexOf(":") == -1 || time.indexOf("http") != -1){
             continue;
@@ -129,7 +131,7 @@
         // $("#fileContent").html(all_data);
         return all_data;
       } catch(err) {
-        showError(err.message);
+        showError("Error line:" + errorline + "," + err.message);
       }
     }
     function calculateWithDate(dateS,dateE){
