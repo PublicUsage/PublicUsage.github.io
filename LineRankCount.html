@@ -16,7 +16,6 @@
       //$("#fileContent").html(content);
       //console.log("content:"+content);
     };
-
     function readFile(target){
       try{
         file = target.files[0];
@@ -25,7 +24,6 @@
         showError(err.message);
       }
     }
-
     function calculate(){
       try{
         var person_map = null;
@@ -86,16 +84,16 @@
             person_map.set(sender.replace("離開聊天","")+"_quit",time);
             continue;
           } else if (sender.indexOf("已將群組名稱改為") != -1 && message == undefined){
-            person_map.set(sender.split("已將群組名稱改為")[0]+"_rename",sender.split("已將群組名稱改為")[1]);
+            person_map.set(sender.split("已將群組名稱改為")[0]+"_rename_"+sender.split("已將群組名稱改為")[1],time);
             continue;
           } else if (sender.indexOf(" changed the group's name to ") != -1 && message == undefined){
-            person_map.set(sender.split(" changed the group's name to ")[0]+"_rename",sender.split(" changed the group's name to ")[1]);
+            person_map.set(sender.split(" changed the group's name to ")[0]+"_rename_"+sender.split(" changed the group's name to ")[1],time);
             continue;
           } else if (sender.indexOf("邀請") != -1 && sender.indexOf("加入群組") != -1 && message == undefined){
-            person_map.set(sender.split("邀請")[0]+"_invite",sender.split("邀請")[1].split("加入群組")[0]);
+            person_map.set(sender.split("邀請")[0]+"_invite_"+sender.split("邀請")[1].split("加入群組")[0],time);
             continue;
           } else if (sender.indexOf(" invited ") != -1 && sender.indexOf(" to the group.") != -1 && message == undefined){
-            person_map.set(sender.split(" invited ")[0]+"_invite",sender.split(" invited ")[1].split(" to the group.")[0]);
+            person_map.set(sender.split(" invited ")[0]+"_invite_"+sender.split(" invited ")[1].split(" to the group.")[0],time);
             continue;
           } else if (sender.indexOf("加入群組") != -1 && message == undefined){
             person_map.set(sender.split("加入群組")[0]+"_join",time);
@@ -112,7 +110,6 @@
           } else if (sender.indexOf("已將相簿名稱") != -1){
             continue;
           }
-
           // $("#fileContent").html($("#fileContent").html() + "\r\n" + (i+1) + ":" + time + "," + sender + "," + message);
           if (message == "[Sticker]" || message == "[貼圖]"){
             setData(person_map,sender,"sticker");
@@ -135,7 +132,6 @@
         showError(err.message);
       }
     }
-
     function calculateWithDate(dateS,dateE){
       try{
         $("#content").html("");
@@ -199,10 +195,10 @@
                 remark.set(index.replace("_kick_","踢了"),this_dateStr + " "  + value);
               }else if (index.indexOf("_quit") != -1){
                 remark.set(index.replace("_quit","退出"),this_dateStr + " "  + value);
-              }else if (index.indexOf("_rename") != -1){
-                remark.set(index.replace("_rename","將群組改名為"),value);
-              }else if (index.indexOf("_invite") != -1){
-                remark.set(index.replace("_invite","邀請"),value);
+              }else if (index.indexOf("_rename_") != -1){
+                remark.set(index.replace("_rename_","將群組改名為"),this_dateStr + " "  + value);
+              }else if (index.indexOf("_invite_") != -1){
+                remark.set(index.replace("_invite_","邀請"),this_dateStr + " "  + value);
               }else if (index.indexOf("_join") != -1){
                 remark.set(index.replace("_join","加入"),this_dateStr + " "  + value);
               }
@@ -224,23 +220,19 @@
         showError(err.message);
       }
     }
-
     function sort(obj) {
       a = [];
       for(var x of obj){
         a.push(x);
       }
-
       a.sort(function(x, y) {
         return x[1] - y[1];
       });
-
       a.reverse();
      
       // return new Map(a);
       return a;
     }
-
     function setData(data,sender,type){
       try{
         if (data.has(sender + "_" + type)){
@@ -252,7 +244,6 @@
         showError(err.message);
       }
     }
-
     function showResult(rank,type){
       try{
         var table = document.createElement("table");
@@ -288,9 +279,6 @@
           table.appendChild(thead);
           var i = 1;
           rank.forEach(function(el) {
-            if (type == 4){
-              console.log(el);
-            }
             if (i==11){
               var tr = document.createElement("tr");
               var td = document.createElement("td");
@@ -341,10 +329,66 @@
             }
             if (el2.indexOf("踢了") != -1){
               var td = document.createElement("td");
-              td.appendChild(document.createTextNode(el2.split("踢了")[0] + "踢了"));
               var span = document.createElement("span");
-              span.className = "mark";
+              span.className = "markB";
+              span.appendChild(document.createTextNode(el2.split("踢了")[0]));
+              td.appendChild(span);
+              td.appendChild(document.createTextNode("踢了"));
+              var span = document.createElement("span");
+              span.className = "markR";
               span.appendChild(document.createTextNode(el2.split("踢了")[1]));
+              td.appendChild(span);
+              tr.appendChild(td);
+              var td = document.createElement("td");
+              td.appendChild(document.createTextNode(el1));
+              tr.appendChild(td);
+            } else if (el2.indexOf("加入") != -1){
+              var td = document.createElement("td");
+              var span = document.createElement("span");
+              span.className = "markB";
+              span.appendChild(document.createTextNode(el2.split("加入")[0]));
+              td.appendChild(span);
+              td.appendChild(document.createTextNode("加入"));
+              tr.appendChild(td);
+              var td = document.createElement("td");
+              td.appendChild(document.createTextNode(el1));
+              tr.appendChild(td);
+            } else if (el2.indexOf("退出") != -1){
+              var td = document.createElement("td");
+              var span = document.createElement("span");
+              span.className = "markR";
+              span.appendChild(document.createTextNode(el2.split("退出")[0]));
+              td.appendChild(span);
+              td.appendChild(document.createTextNode("退出"));
+              tr.appendChild(td);
+              var td = document.createElement("td");
+              td.appendChild(document.createTextNode(el1));
+              tr.appendChild(td);
+            } else if (el2.indexOf("邀請") != -1){
+              var td = document.createElement("td");
+              var span = document.createElement("span");
+              span.className = "markB";
+              span.appendChild(document.createTextNode(el2.split("邀請")[0]));
+              td.appendChild(span);
+              td.appendChild(document.createTextNode("邀請"));
+              var span = document.createElement("span");
+              span.className = "markB";
+              span.appendChild(document.createTextNode(el2.split("邀請")[1]));
+              td.appendChild(span);
+              tr.appendChild(td);
+              var td = document.createElement("td");
+              td.appendChild(document.createTextNode(el1));
+              tr.appendChild(td);
+            } else if (el2.indexOf("將群組改名為") != -1){
+              var td = document.createElement("td");
+              var span = document.createElement("span");
+              span.className = "markB";
+              span.appendChild(document.createTextNode(el2.split("將群組改名為")[0]));
+              td.appendChild(span);
+              td.appendChild(document.createTextNode("將群組改名為"));
+              var span = document.createElement("span");
+              span.className = "markB";
+              span.appendChild(document.createTextNode(el2.split("將群組改名為")[1]));
               td.appendChild(span);
               tr.appendChild(td);
               var td = document.createElement("td");
@@ -391,7 +435,6 @@
         calculateWithDate($("#dateS").val(),$("#dateE").val());
         $(this).text("計算");
       });
-
       $(document).on("click",".switch",function(){
         var target = $(this).closest("table").children().find(".other");
         if (target.hasClass("more")){
@@ -405,7 +448,6 @@
   </script>
   <style>
     @import url('https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css');
-
     table.gridtable {
       font-family: verdana,arial,sans-serif;
       font-size:11px;
@@ -433,11 +475,18 @@
     .more {
       display: none;
     }
-    .mark {
+    .markR {
       color: red;
+      font-weight: bold;
+      padding-left: 5px;
+      padding-right: 5px;
     }
-
-    
+    .markB {
+      color: blue;
+      font-weight: bold;
+      padding-left: 5px;
+      padding-right: 5px;
+    }
  
     .isa_info, .isa_success, .isa_warning, .isa_error {
       margin: 10px 0px;
@@ -468,9 +517,8 @@
       font-size:2em;
       vertical-align:middle;
     }
-
     .container {
-      width: 1200px;
+      width: 1500px;
     }
   </style>
 </head>
@@ -489,5 +537,6 @@
       <span id="error"></span>
     </div>
   </div>
+  <h2>Made By 雞米花</h2>
 </body>
 </html>
