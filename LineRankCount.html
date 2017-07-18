@@ -213,6 +213,7 @@
         mess_rank = sort(mess_rank);
         shortmess_rank = sort(shortmess_rank);
         sticker_rank = sort(sticker_rank);
+        photo_rank = sort(photo_rank);
         showResult(mess_rank,1);
         showResult(shortmess_rank,2);
         showResult(sticker_rank,3);
@@ -287,6 +288,9 @@
           table.appendChild(thead);
           var i = 1;
           rank.forEach(function(el) {
+            if (type == 4){
+              console.log(el);
+            }
             if (i==11){
               var tr = document.createElement("tr");
               var td = document.createElement("td");
