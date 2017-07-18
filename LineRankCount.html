@@ -10,7 +10,7 @@
     var content = "";
     var fReader = new FileReader();
     var d = null;
-	var language = "";
+    var language = "";
     fReader.onload = function (event) {
       content = event.target.result;
       //$("#fileContent").html(content);
@@ -46,7 +46,7 @@
           person_map.set("date",lines[i]);
           continue;
         }else if (lines[i].match(/[0-9]{4}\/[0-9]{2}\/[0-9]{2}（\D）/)){
-		  language = "cht";
+          language = "cht";
           //新的日期
           all_data.push(person_map);
           person_map = new Map();
@@ -116,7 +116,7 @@
         }
       }
       all_data.push(person_map);
-	  d = all_data;
+      d = all_data;
       // console.log(all_data);
       // $("#fileContent").html(all_data);
       return all_data;
@@ -133,19 +133,18 @@
       var this_data = calculate();
       d = this_data;
       for (var i=1; i<this_data.length; i++){
-	    var this_dateStr = "";
-		var this_date = null;
-	    if (language == "en"){
-		  this_dateStr = this_data[i].get("date").substring(5);
+        var this_dateStr = "";
+        var this_date = null;
+        if (language == "en"){
+          this_dateStr = this_data[i].get("date").substring(5);
           // console.log(this_date);
           this_date = new Date(this_dateStr.split("/")[2] + "-" + this_dateStr.split("/")[1] + "-" + this_dateStr.split("/")[0]);
-		}else if (language == "cht"){
-		  this_dateStr = this_data[i].get("date").substring(0,10);
-		  this_date = new Date(this_dateStr.split("/")[0] + "-" + this_dateStr.split("/")[1] + "-" + this_dateStr.split("/")[2]);
-		}
-        
+        }else if (language == "cht"){
+          this_dateStr = this_data[i].get("date").substring(0,10);
+          this_date = new Date(this_dateStr.split("/")[0] + "-" + this_dateStr.split("/")[1] + "-" + this_dateStr.split("/")[2]);
+        }
         if (this_date < dateS || this_date > dateE){
-          //delete this_data[i];
+          delete this_data[i];
         }else{
           this_data[i].forEach(function(value, index){
             if (index.indexOf("_message") != -1){
@@ -206,7 +205,6 @@
 
       a.reverse();
      
-
       // return new Map(a);
       return a;
     }
@@ -237,7 +235,7 @@
       }else if (type == 4){
         title = "其餘事項";
       }
-      if (type != 4){
+      if (type < 4){
         th.appendChild(document.createTextNode(title + "排行榜"));
         headRow.appendChild(th);
         thead.appendChild(headRow);
