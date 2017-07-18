@@ -310,6 +310,14 @@
           th.appendChild(document.createTextNode(title));
           headRow.appendChild(th);
           thead.appendChild(headRow);
+          var headRow = document.createElement("tr");
+          ["事件","時間"].forEach(function(el) {
+            var th=document.createElement("th");
+            th.appendChild(document.createTextNode(el));
+            headRow.appendChild(th);
+          });
+          thead.appendChild(headRow);
+          table.appendChild(thead);
           var i = 1;
           rank.forEach(function(el1,el2) {
             if (i==11){
