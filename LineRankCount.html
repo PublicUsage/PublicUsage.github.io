@@ -111,6 +111,8 @@
             continue;
           } else if (sender.indexOf("已將相簿名稱") != -1){
             continue;
+          } else if (sender.indexOf("Live已結束") != -1){
+            continue;
           }
           // $("#fileContent").html($("#fileContent").html() + "\r\n" + (i+1) + ":" + time + "," + sender + "," + message);
           if (message == "[Sticker]" || message == "[貼圖]"){
