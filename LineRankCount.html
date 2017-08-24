@@ -53,7 +53,7 @@
             person_map = new Map();
             person_map.set("date",lines[i]);
             continue;
-          }else if (lines[i].match(/[0-9]{4}\/[0-9]{2}\/[0-9]{2}（\D）/)){
+          }else if (lines[i].match(/[0-9]{4}\/[0-9]{2}\/[0-9]{2}（\D）/) || lines[i].match(/[0-9]{4}\/[0-9]{2}\/[0-9]{2}(\D)/)){
             language = "cht";
             //新的日期
             all_data.push(person_map);
@@ -93,6 +93,9 @@
             continue;
           } else if (sender.indexOf("邀請") != -1 && sender.indexOf("加入群組") != -1 && message == undefined){
             person_map.set(sender.split("邀請")[0]+"_invite_"+sender.split("邀請")[1].split("加入群組")[0],time);
+            if (i == 25553){
+              console.log(person_map);
+            }
             continue;
           } else if (sender.indexOf(" invited ") != -1 && sender.indexOf(" to the group.") != -1 && message == undefined){
             person_map.set(sender.split(" invited ")[0]+"_invite_"+sender.split(" invited ")[1].split(" to the group.")[0],time);
@@ -102,7 +105,10 @@
             continue;
           } else if (sender.indexOf(" joined the group.") != -1 && message == undefined){
             person_map.set(sender.split(" joined the group.")[0]+"_join",time);
-            continue;  
+            continue;
+          } else if (sender.indexOf("加入聊天") != -1 && message == undefined){
+            person_map.set(sender.split("加入聊天")[0]+"_joinchat",time);
+            continue;
           } else if (sender.indexOf("已讓") != -1 && sender.indexOf("退出群組") != -1 && message == undefined){
             person_map.set(sender.split("已讓")[0]+"_kick_"+sender.split("已讓")[1].split("退出群組")[0],time);
             continue;
@@ -133,6 +139,8 @@
         // $("#fileContent").html(all_data);
         return all_data;
       } catch(err) {
+        console.log(err);
+        
         showError("Error line:" + errorline + "," + err.message);
       }
     }
@@ -159,9 +167,11 @@
             this_dateStr = this_dateStr.split("/")[2] + "-" + this_dateStr.split("/")[1] + "-" + this_dateStr.split("/")[0];
             this_date = new Date(this_dateStr);
           }else if (language == "cht"){
+            // console.log(this_data[i].get("date"));
             this_dateStr = this_data[i].get("date").substring(0,10);
             this_dateStr = this_dateStr.split("/")[0] + "-" + this_dateStr.split("/")[1] + "-" + this_dateStr.split("/")[2];
             this_date = new Date(this_dateStr);
+            // console.log(this_dateStr);
           }
           if (this_date < dateS || this_date > dateE){
             delete this_data[i];
@@ -205,6 +215,8 @@
                 remark.set(index.replace("_invite_","邀請"),this_dateStr + " "  + value);
               }else if (index.indexOf("_join") != -1){
                 remark.set(index.replace("_join","加入"),this_dateStr + " "  + value);
+              }else if (index.indexOf("_joinchat") != -1){
+                remark.set(index.replace("_joinchat","加入聊天"),this_dateStr + " "  + value);
               }
             });
           }
