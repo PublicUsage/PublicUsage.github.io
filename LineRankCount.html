@@ -126,7 +126,7 @@
           }else if (message == "[Photo]" || message == "[照片]"){
             setData(person_map,sender,"photo");
           }else{
-            if (message.length <= 2){
+            if (message.length <= 3){
               setData(person_map,sender,"shortmessage");
             }else{
               setData(person_map,sender,"message");
@@ -273,7 +273,7 @@
         if (type == 1){
           title = "訊息";
         }else if (type == 2){
-          title = "兩字以內訊息";
+          title = "三個字以內訊息";
         }else if (type == 3){
           title = "貼圖";
         }else if (type == 4){
