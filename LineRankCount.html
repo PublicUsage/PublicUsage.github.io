@@ -78,6 +78,7 @@
             continue;
           } else if (sender.indexOf("已退出群組") != -1 && message == undefined){
             person_map.set(sender.replace("已退出群組","")+"_quit",time);
+            console.log(time);
             continue;
           } else if (sender.indexOf(" left the group.") != -1 && message == undefined){
             person_map.set(sender.replace(" left the group.","")+"_quit",time);
