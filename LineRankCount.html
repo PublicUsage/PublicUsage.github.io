@@ -115,11 +115,18 @@
             continue;
           } else if (sender.indexOf("已將相簿名稱") != -1){
             continue;
+          } else if (sender.indexOf("更改了群組圖片") != -1){
+            continue;
           } else if (sender.indexOf("刪除了") != -1 && sender.indexOf("相簿內的照片") != -1){
+            continue;
+          } else if (sender.indexOf("已將") != -1 && sender.indexOf("的相簿刪除") != -1){
             continue;
           } else if (sender.indexOf("Live已結束") != -1){
             continue;
+          } else if (sender.indexOf("已封鎖使用網址／行動條碼的群組邀請") != -1){
+            continue;
           }
+
           // $("#fileContent").html($("#fileContent").html() + "\r\n" + (i+1) + ":" + time + "," + sender + "," + message);
           if (message == "[Sticker]" || message == "[貼圖]"){
             setData(person_map,sender,"sticker");
