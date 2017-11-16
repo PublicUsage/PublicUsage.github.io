@@ -47,14 +47,14 @@
           if (lines[i].trim().length == 0){
             continue;
           }
-          if (lines[i].split("\t").length == 1 && lines[i].match(/[a-zA-Z]{3}, [0-9]{2}\/[0-9]{2}\/[0-9]{4}/)){
+          if (lines[i].split("\t").length == 1 && lines[i].match(/^[a-zA-Z]{3}, [0-9]{2}\/[0-9]{2}\/[0-9]{4}/)){
             language = "en";
             //新的日期
             all_data.push(person_map);
             person_map = new Map();
             person_map.set("date",lines[i]);
             continue;
-          }else if (lines[i].split("\t").length == 1 && (lines[i].match(/[0-9]{4}\/[0-9]{2}\/[0-9]{2}（\D）/) || lines[i].match(/[0-9]{4}\/[0-9]{2}\/[0-9]{2}(\D)/))){
+          }else if (lines[i].split("\t").length == 1 && (lines[i].match(/^[0-9]{4}\/[0-9]{2}\/[0-9]{2}（\D）/) || lines[i].match(/^[0-9]{4}\/[0-9]{2}\/[0-9]{2}(\D)/))){
             language = "cht";
             //新的日期
             all_data.push(person_map);
@@ -126,7 +126,6 @@
           } else if (sender.indexOf("已封鎖使用網址／行動條碼的群組邀請") != -1){
             continue;
           }
-
           // $("#fileContent").html($("#fileContent").html() + "\r\n" + (i+1) + ":" + time + "," + sender + "," + message);
           if (message == "[Sticker]" || message == "[貼圖]"){
             setData(person_map,sender,"sticker");
@@ -445,12 +444,10 @@
         showError(err.message);
       }
     }
-
     function showError(text){
       $(".isa_error").show();
       $("#error").text("Error description:" + text);
     }
-
     $(document).ready(function(){
       document.getElementById("dateS").valueAsDate = new Date();
       document.getElementById("dateE").valueAsDate = new Date();
