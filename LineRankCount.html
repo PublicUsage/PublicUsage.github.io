@@ -125,6 +125,8 @@
             continue;
           } else if (sender.indexOf("已封鎖使用網址／行動條碼的群組邀請") != -1){
             continue;
+          } else if (message.indexOf("已收回訊息") != -1){
+            continue;
           }
           // $("#fileContent").html($("#fileContent").html() + "\r\n" + (i+1) + ":" + time + "," + sender + "," + message);
           if (message == "[Sticker]" || message == "[貼圖]"){
