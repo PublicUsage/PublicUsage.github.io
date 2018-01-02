@@ -127,6 +127,8 @@
             continue;
           } else if (sender.indexOf("已收回訊息") != -1){
             continue;
+          } else if (sender.indexOf("已取消傳送訊息") != -1){
+            continue;
           }
           // $("#fileContent").html($("#fileContent").html() + "\r\n" + (i+1) + ":" + time + "," + sender + "," + message);
           if (message == "[Sticker]" || message == "[貼圖]"){
