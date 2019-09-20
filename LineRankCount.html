@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <META http-equiv="expires" content="0">
-  <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   <title>Line群組紀錄計算</title>
   <script>
     var content = null;
@@ -95,6 +95,9 @@
           } else if (sender.indexOf("邀請") != -1 && sender.indexOf("加入群組") != -1 && message == undefined){
             person_map.set(sender.split("邀請")[0]+"_invite_"+sender.split("邀請")[1].split("加入群組")[0],time);
             continue;
+          } else if (sender.indexOf("邀請") != -1 && sender.indexOf("加入") != -1 && message == undefined){
+            person_map.set(sender.split("邀請")[0]+"_invite_"+sender.split("邀請")[1].split("加入")[0],time);
+            continue;
           } else if (sender.indexOf(" invited ") != -1 && sender.indexOf(" to the group.") != -1 && message == undefined){
             person_map.set(sender.split(" invited ")[0]+"_invite_"+sender.split(" invited ")[1].split(" to the group.")[0],time);
             continue;
@@ -126,8 +129,6 @@
           } else if (sender.indexOf("已封鎖使用網址／行動條碼的群組邀請") != -1){
             continue;
           } else if (sender.indexOf("已收回訊息") != -1){
-            continue;
-          } else if (sender.indexOf("已取消傳送訊息") != -1){
             continue;
           }
           // $("#fileContent").html($("#fileContent").html() + "\r\n" + (i+1) + ":" + time + "," + sender + "," + message);
@@ -567,6 +568,6 @@
       <span id="error"></span>
     </div>
   </div>
-  <h2>Made By 雞米花</h2>
+  <h2>Made By 雞米花, 2019/9/20 Update</h2>
 </body>
 </html>
