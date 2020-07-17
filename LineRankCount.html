@@ -66,6 +66,7 @@
           var time = lines[i].split("\t")[0];
           var sender = lines[i].split("\t")[1];
           var message = lines[i].split("\t")[2];
+          console.log(time);
           if (time == undefined || sender == undefined || message == undefined){
             $("#fileContent").html($("#fileContent").html() + "\r\n" + (i+1) + ":" + time + "," + sender + "," + message);
             errorline = lines[i];
@@ -111,15 +112,15 @@
           } else if (sender.indexOf("加入聊天") != -1 && message == undefined){
             person_map.set(sender.split("加入聊天")[0]+"_joinchat",time);
             continue;
-          } else if (sender.indexOf("已讓") != -1 && sender.indexOf("退出群組") != -1 && message == undefined){
-            person_map.set(sender.split("已讓")[0]+"_kick_"+sender.split("已讓")[1].split("退出群組")[0],time);
+          } else if (sender.indexOf("已將") != -1 && sender.indexOf("退出群組") != -1 && message == undefined){
+            person_map.set(sender.split("已將")[0]+"_kick_"+sender.split("已將")[1].split("退出群組")[0],time);
             continue;
           } else if (sender.indexOf(" removed ") != -1 && sender.indexOf(" from the group.") != -1 && message == undefined){
             person_map.set(sender.split(" removed ")[0]+"_kick_"+sender.split(" removed ")[1].split(" from the group.")[0],time);
             continue;
           } else if (sender.indexOf("已將相簿名稱") != -1){
             continue;
-          } else if (sender.indexOf("更改了群組圖片") != -1){
+          } else if (sender.indexOf("更改了群組圖片") != -1 || sender.indexOf("已變更群組圖片") != -1){
             continue;
           } else if (sender.indexOf("刪除了") != -1 && sender.indexOf("相簿內的照片") != -1){
             continue;
