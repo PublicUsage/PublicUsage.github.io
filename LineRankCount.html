@@ -66,7 +66,6 @@
           var time = lines[i].split("\t")[0];
           var sender = lines[i].split("\t")[1];
           var message = lines[i].split("\t")[2];
-          console.log(time);
           if (time == undefined || sender == undefined || message == undefined){
             $("#fileContent").html($("#fileContent").html() + "\r\n" + (i+1) + ":" + time + "," + sender + "," + message);
             errorline = lines[i];
@@ -94,6 +93,9 @@
           } else if (sender.indexOf(" changed the group's name to ") != -1 && message == undefined){
             person_map.set(sender.split(" changed the group's name to ")[0]+"_rename_"+sender.split(" changed the group's name to ")[1],time);
             continue;
+          } else if (sender.indexOf("已邀請") != -1 && sender.indexOf("加入群組") != -1 && message == undefined){
+            person_map.set(sender.split("已邀請")[0]+"_invite_"+sender.split("已邀請")[1].split("加入群組")[0],time);
+            continue;
           } else if (sender.indexOf("邀請") != -1 && sender.indexOf("加入群組") != -1 && message == undefined){
             person_map.set(sender.split("邀請")[0]+"_invite_"+sender.split("邀請")[1].split("加入群組")[0],time);
             continue;
@@ -102,6 +104,9 @@
             continue;
           } else if (sender.indexOf(" invited ") != -1 && sender.indexOf(" to the group.") != -1 && message == undefined){
             person_map.set(sender.split(" invited ")[0]+"_invite_"+sender.split(" invited ")[1].split(" to the group.")[0],time);
+            continue;
+          } else if (sender.indexOf("已加入群組") != -1 && message == undefined){
+            person_map.set(sender.split("已加入群組")[0]+"_join",time);
             continue;
           } else if (sender.indexOf("加入群組") != -1 && message == undefined){
             person_map.set(sender.split("加入群組")[0]+"_join",time);
@@ -117,6 +122,12 @@
             continue;
           } else if (sender.indexOf(" removed ") != -1 && sender.indexOf(" from the group.") != -1 && message == undefined){
             person_map.set(sender.split(" removed ")[0]+"_kick_"+sender.split(" removed ")[1].split(" from the group.")[0],time);
+            continue;
+          } else if (message != undefined && message.indexOf("chat.message.groupcall.started.long") != -1){
+            person_map.set(sender+"_startgroupcall",time);
+            continue;
+          } else if (sender != undefined && sender.indexOf("chat.message.groupcall.end.long") != -1){
+            person_map.set("endgroupcall",time);
             continue;
           } else if (sender.indexOf("已將相簿名稱") != -1){
             continue;
@@ -228,6 +239,10 @@
                 remark.set(index.replace("_join","加入"),this_dateStr + " "  + value);
               }else if (index.indexOf("_joinchat") != -1){
                 remark.set(index.replace("_joinchat","加入聊天"),this_dateStr + " "  + value);
+              }else if (index.indexOf("_startgroupcall") != -1){
+                remark.set(index.replace("_startgroupcall","開啟語音通話"),this_dateStr + " "  + value);
+              }else if (index.indexOf("endgroupcall") != -1){
+                remark.set(index.replace("endgroupcall","語音通話結束"),this_dateStr + " "  + value);
               }
             });
           }
@@ -429,6 +444,21 @@
               var td = document.createElement("td");
               td.appendChild(document.createTextNode(el1));
               tr.appendChild(td);
+            } else if (el2.indexOf("開啟") != -1){
+              var td = document.createElement("td");
+              var span = document.createElement("span");
+              span.className = "markB";
+              span.appendChild(document.createTextNode(el2.split("開啟")[0]));
+              td.appendChild(span);
+              td.appendChild(document.createTextNode("開啟"));
+              var span = document.createElement("span");
+              span.className = "markB";
+              span.appendChild(document.createTextNode(el2.split("開啟")[1]));
+              td.appendChild(span);
+              tr.appendChild(td);
+              var td = document.createElement("td");
+              td.appendChild(document.createTextNode(el1));
+              tr.appendChild(td);
             }else{
               var td = document.createElement("td");
               td.appendChild(document.createTextNode(el2));
@@ -570,6 +600,6 @@
       <span id="error"></span>
     </div>
   </div>
-  <h2>Made By 雞米花, 2020/07/17 Update</h2>
+  <h2>Made By 雞米花, 2021/02/26 Update</h2>
 </body>
 </html>
