@@ -60,9 +60,15 @@
       $.get('https://spreadsheets.google.com/feeds/list/1ze0V7CdFrB3iFrGPEv4fIrhRpD_HMi5pYp3KKWJwzdg/1/public/values?alt=json',function (data) {
         var d = data.feed.entry;
         var items = [];
+        console.log(d);
+        var index = 1;
         for(var i in d) {
+          if (d[i].gsx$是否加入.$t != "已加入" || $.trim(d[i].gsx$黑單.$t) != ""){
+            continue;
+          }
           var item = {};
-          item.serial = i;
+          item.serial = index;
+          index += 1;
           item.nickname = d[i].gsx$大名or綽號.$t;
           item.birthday = d[i].gsx$出生年月日.$t.substring(5);
           item.countdown = d[i].gsx$距離生日天數.$t;
