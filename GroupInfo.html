@@ -64,7 +64,7 @@
           var item = {};
           item.serial = i;
           item.nickname = d[i].gsx$大名or綽號.$t;
-          item.birthday = d[i].gsx$出生年月日.$t;
+          item.birthday = d[i].gsx$出生年月日.$t.substring(5);
           item.countdown = d[i].gsx$距離生日天數.$t;
           if (parseInt(item.countdown) < nextBirthdayPersonCountDown){
             nextBirthdayPersonCountDown = item.countdown;
