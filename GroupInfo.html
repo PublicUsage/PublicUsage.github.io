@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <title>有你的星空</title>
+  <style>
+    @import url('https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css');
+
+    table.gridtable {
+      font-family: verdana, arial, sans-serif;
+      font-size: 11px;
+      color: #333333;
+      border-width: 1px;
+      border-color: #666666;
+      border-collapse: collapse;
+      display: inline;
+      padding-right: 20px;
+    }
+
+    table.gridtable th {
+      border-width: 1px;
+      padding: 8px;
+      border-style: solid;
+      border-color: #666666;
+      background-color: #dedede;
+    }
+
+    table.gridtable td {
+      border-width: 1px;
+      padding: 8px;
+      border-style: solid;
+      border-color: #666666;
+      background-color: #ffffff;
+    }
+
+    .header {
+      font-size: 18px;
+    }
+
+    .nearbirthday {
+      background-color: #fdeed2 !important;
+    }
+
+    .nextbirthday {
+      color: #1743ff;
+      font-weight: bold;
+    }
+  </style>
+  <script>
+    $(function () {
+      //顯示今天日期
+      $("#day").text(getTodayDate());
+      //抓資料
+      var nextBirthdayPersonNickname = "";
+      var nextBirthdayPersonCountDown = 500;
+      $.get('https://spreadsheets.google.com/feeds/list/1ze0V7CdFrB3iFrGPEv4fIrhRpD_HMi5pYp3KKWJwzdg/1/public/values?alt=json',function (data) {
+        var d = data.feed.entry;
+        var items = [];
+        for(var i in d) {
+          var item = {};
+          item.serial = i;
+          item.nickname = d[i].gsx$大名or綽號.$t;
+          item.birthday = d[i].gsx$出生年月日.$t;
+          item.countdown = d[i].gsx$距離生日天數.$t;
+          if (parseInt(item.countdown) < nextBirthdayPersonCountDown){
+            nextBirthdayPersonCountDown = item.countdown;
+            nextBirthdayPersonNickname = item.nickname;
+          }
+          item.job = d[i].gsx$工作職業.$t;
+          item.locate = d[i].gsx$地區.$t;
+          item.info = d[i].gsx$簡單自我介紹.$t;
+          items.push(item);
+        }
+        //顯示下位壽星
+        $("#noti").html(getNextBirthdayPerson(nextBirthdayPersonNickname,nextBirthdayPersonCountDown));
+
+        var cols = ["serial","nickname","birthday","countdown","job","locate","info"];
+        for (var i=0; i<items.length; i++){
+          var item = items[i];
+          var $tr = $("<tr/>");
+          for (var j=0; j<cols.length; j++){
+            var $td = $("<td/>");
+            if (item.countdown < 30){
+              $td.addClass("nearbirthday");
+              if (j == 3){
+                $td.attr("style","color:red; !important");
+              }
+            }
+            $td.html(item[cols[j]]);
+            $tr.append($td);
+          }
+          $("#infotable tbody").append($tr);
+        }
+      });
+    });
+
+    function getTodayDate(){
+      var d = new Date();
+      return "今天是" + d.getFullYear() + "年" + (d.getMonth()+1) + "月" + d.getDate() + "日";
+    }
+
+    function getNextBirthdayPerson(nickname,countdown){
+      return "生日預告：" + nickname + "將在" + countdown + "天後生日";
+    }
+  </script>
+</head>
+
+<body>
+  <table id="infotable" class="gridtable">
+    <thead>
+      <tr>
+        <th id="day" colspan="3" class="header"></th>
+        <th id="noti" colspan="4" class="header nextbirthday"></th>
+      </tr>
+      <tr>
+        <th>#</th>
+        <th>暱稱</th>
+        <th>生日</th>
+        <th>距離生日天數</th>
+        <th>職業</th>
+        <th>地區</th>
+        <th>自我介紹</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+</body>
+
+</html>
