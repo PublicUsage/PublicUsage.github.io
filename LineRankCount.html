@@ -51,7 +51,7 @@
           if (lines[i].trim().length == 0) {
             continue;
           }
-
+          
           if (lines[i].split("\t").length == 1 && lines[i].match(/^[a-zA-Z]{3}, [0-9]{2}\/[0-9]{2}\/[0-9]{4}/)) {
             language = "en";
             //新的日期
@@ -59,9 +59,9 @@
             person_map = new Map();
             person_map.set("date", lines[i]);
             continue;
-          } else if (lines[i].split("\t").length == 1 && (lines[i].match(/^[0-9]{4}\/[0-9]+\/[0-9]{2}[（]\D[）]/) ||
-              lines[i].match(/^[0-9]{4}\/[0-9]+\/[0-9]{2}[(]\D[)]/))) {
-            var d = new Date(lines[i].match(/^[0-9]{4}\/[0-9]+\/[0-9]{2}/)[0]);
+          } else if (lines[i].split("\t").length == 1 && (lines[i].match(/^[0-9]{4}\/[0-9]+\/[0-9]+[（]\D+[）]/) || lines[i].match(/^[0-9]{4}\/[0-9]+\/[0-9]+[(]\D+[)]/))) {
+            var d = new Date(lines[i].match(/^[0-9]{4}\/[0-9]+\/[0-9]+/)[0]);
+            
             if (dateS < d && dateE > d) {
               countFlag = true;
             } else {
@@ -164,6 +164,8 @@
             } else if (sender.indexOf("已封鎖使用網址／行動條碼的群組邀請") != -1) {
               continue;
             } else if (sender.indexOf("已收回訊息") != -1) {
+              continue;
+            } else if (sender.indexOf("已關閉設定") != -1) {
               continue;
             }
             // $("#fileContent").html($("#fileContent").html() + "\r\n" + (i+1) + ":" + time + "," + sender + "," + message);
@@ -526,7 +528,6 @@
       $("#calc").click(function () {
         $(".isa_error").hide();
         $(this).text("計算中...").prop("disabled",true);
-        console.log("H");
         calculateWithDate($("#dateS").val(), $("#dateE").val());
         $(this).text("計算").prop("disabled",false);
       });
@@ -647,7 +648,7 @@
       <span id="error"></span>
     </div>
   </div>
-  <h2>Made By 雞米花, 2021/04/08 Update</h2>
+  <h2>Made By 雞米花, 2021/06/22 Update</h2>
 </body>
 
 </html>
