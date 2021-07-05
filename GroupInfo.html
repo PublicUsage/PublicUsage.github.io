@@ -71,6 +71,7 @@
           index += 1;
           item.nickname = d[i].gsx$大名or綽號.$t;
           item.birthday = d[i].gsx$出生年月日.$t.substring(5);
+          item.zodiac = d[i].gsx$星座.$t;
           item.countdown = d[i].gsx$距離生日天數.$t;
           if (parseInt(item.countdown) < nextBirthdayPersonCountDown){
             nextBirthdayPersonCountDown = item.countdown;
@@ -84,7 +85,7 @@
         //顯示下位壽星
         $("#noti").html(getNextBirthdayPerson(nextBirthdayPersonNickname,nextBirthdayPersonCountDown));
 
-        var cols = ["serial","nickname","birthday","countdown","job","locate","info"];
+        var cols = ["serial","nickname","birthday","zodiac","countdown","job","locate","info"];
         for (var i=0; i<items.length; i++){
           var item = items[i];
           var $tr = $("<tr/>");
@@ -126,6 +127,7 @@
         <th>#</th>
         <th>暱稱</th>
         <th>生日</th>
+        <th>星座</th>
         <th>距離生日天數</th>
         <th>職業</th>
         <th>地區</th>
