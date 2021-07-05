@@ -93,9 +93,12 @@
             var $td = $("<td/>");
             if (item.countdown < 30){
               $td.addClass("nearbirthday");
-              if (j == 3){
+              if (j == 4){
                 $td.attr("style","color:red; !important");
               }
+            }
+            if (j != 7){
+              $td.css("white-space","nowrap");
             }
             $td.html(item[cols[j]]);
             $tr.append($td);
@@ -120,7 +123,7 @@
   <table id="infotable" class="gridtable">
     <thead>
       <tr>
-        <th id="day" colspan="3" class="header"></th>
+        <th id="day" colspan="4" class="header"></th>
         <th id="noti" colspan="4" class="header nextbirthday"></th>
       </tr>
       <tr>
