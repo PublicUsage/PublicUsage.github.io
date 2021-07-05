@@ -49,6 +49,10 @@
       color: #1743ff;
       font-weight: bold;
     }
+
+    .nowarp {
+      white-space: nowrap;
+    }
   </style>
   <script>
     $(function () {
@@ -60,7 +64,7 @@
       $.get('https://spreadsheets.google.com/feeds/list/1ze0V7CdFrB3iFrGPEv4fIrhRpD_HMi5pYp3KKWJwzdg/1/public/values?alt=json',function (data) {
         var d = data.feed.entry;
         var items = [];
-        console.log(d);
+        //console.log(d);
         var index = 1;
         for(var i in d) {
           if (d[i].gsx$是否加入.$t != "已加入" || $.trim(d[i].gsx$黑單.$t) != ""){
@@ -97,8 +101,11 @@
                 $td.attr("style","color:red; !important");
               }
             }
-            if (j != 7){
-              $td.css("white-space","nowrap");
+            var nowrapcols = [0,2,3,4];
+            for (var k=0; k<nowrapcols.length; k++){
+              if (j == nowrapcols[k]){
+                $td.addClass("nowarp");
+              }
             }
             $td.html(item[cols[j]]);
             $tr.append($td);
@@ -127,11 +134,11 @@
         <th id="noti" colspan="4" class="header nextbirthday"></th>
       </tr>
       <tr>
-        <th>#</th>
+        <th class="nowarp">#</th>
         <th>暱稱</th>
-        <th>生日</th>
-        <th>星座</th>
-        <th>距離生日天數</th>
+        <th class="nowarp">生日</th>
+        <th class="nowarp">星座</th>
+        <th class="nowarp">距離生日天數</th>
         <th>職業</th>
         <th>地區</th>
         <th>自我介紹</th>
