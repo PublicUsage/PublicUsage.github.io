@@ -91,9 +91,7 @@
             if (sender == undefined && message == undefined) {
               continue;
             }
-            if (sender.indexOf("已同意使用網址／行動條碼的群組邀請") != -1 || sender.indexOf("群組通話已結束") != -1 || (sender.indexOf(
-                "已取消") != -1 && sender.indexOf("的邀請") != -1) || sender.indexOf(
-              " changed the group's profile picture.") != -1) {
+            if (sender.indexOf("已同意使用網址／行動條碼的群組邀請") != -1 || sender.indexOf("群組通話已結束") != -1 || (sender.indexOf("已取消") != -1 && sender.indexOf("的邀請") != -1) || sender.indexOf("changed the group's profile picture.") != -1) {
               continue;
             } else if (sender.indexOf("已退出群組") != -1 && message == undefined) {
               person_map.set(sender.replace("已退出群組", "") + "_quit", time);
@@ -166,6 +164,8 @@
             } else if (sender.indexOf("已收回訊息") != -1) {
               continue;
             } else if (sender.indexOf("已關閉設定") != -1) {
+              continue;
+            } else if (sender.indexOf("⁩⁩已開啟設定") != -1) {
               continue;
             }
             // $("#fileContent").html($("#fileContent").html() + "\r\n" + (i+1) + ":" + time + "," + sender + "," + message);
@@ -648,7 +648,7 @@
       <span id="error"></span>
     </div>
   </div>
-  <h2>Made By 雞米花, 2021/06/22 Update</h2>
+  <h2>Made By 雞米花, 2021/08/12 Update</h2>
 </body>
 
 </html>
